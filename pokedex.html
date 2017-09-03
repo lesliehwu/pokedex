@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<style>
+			#pokemanz img{
+				width:50px;
+				height:50px;
+				display:inline-block;
+				margin:25px;
+			}
+			#pokemanz{
+				display:inline-block;
+				width:80%;
+			}
+			#pokeinfo{
+				display:inline-block;
+				border: thick solid red;
+				width:16%;
+				height:500px;
+				vertical-align:top;
+				padding:10px;
+			}
+
+			.name{
+				text-align:center;
+			}
+
+			.thePic{
+				margin-left:20%;
+			}
+		</style>
+		<script>
+			$(document).ready(function(){
+				var imgURL = "http://pokeapi.co/media/img/";
+
+				for (var i = 1; i <= 151; i++){
+					$("#pokemanz").append("<img id='" + i + "'src=" + imgURL + i + ".png>");
+				};
+
+				$("img").click(function(){
+					var theID = $(this).attr("id");
+
+					var theURL = "http://pokeapi.co/api/v1/pokemon/" + theID + "/";
+
+					$.get(theURL,function(res){
+						$("#pokeinfo").html("<h2 class='name'>" + res.name + "</h2>");
+						$("#pokeinfo").append("<img class='thePic' src=" + imgURL + theID + ".png>");
+						$("#pokeinfo").append("<h4>Types</h4>");
+						$("#pokeinfo").append("<ul>");
+						for (var i = 0; i < res.types.length; i++){
+							$("#pokeinfo").append("<li>" + res.types[i].name + "</li>");
+						}
+						$("#pokeinfo").append("</ul>");
+						$("#pokeinfo").append("<h4>Height</h4>" + res.height);
+						$("#pokeinfo").append("<h4>Weight</h4>" + res.weight);
+					}, "json");
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id = "pokemanz">
+		</div>
+		<div id="pokeinfo">
+		</div>
+	</body>
+</html>
